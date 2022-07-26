@@ -43,6 +43,7 @@
     "linebreak-style": ["error", "windows"],
     "comma-dangle": "off",
     "@typescript-eslint/comma-dangle": ["off"],
-    "object-curly-newline": "off"
+    "object-curly-newline": "off",
+    "@typescript-eslint/no-unsafe-return": "off"
   }
 }
