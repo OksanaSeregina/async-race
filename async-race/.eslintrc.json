@@ -1,0 +1,48 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "prettier", "import"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:prettier/recommended",
+    "prettier"
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true
+  },
+  "ignorePatterns": ["*.config.js", "node_modules/", "dist/", "*.spec.*"],
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
+    "no-debugger": "off",
+    "no-console": 0,
+    "class-methods-use-this": "off",
+    "@typescript-eslint/no-explicit-any": "error",
+    "no-plusplus": "off",
+    "max-len": ["warn", { "code": 140 }],
+    "indent": "off",
+    "@typescript-eslint/indent": "off",
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/restrict-template-expressions": "off",
+    "no-param-reassign": [
+      "error",
+      {
+        "props": false
+      }
+    ],
+    "linebreak-style": ["error", "windows"],
+    "comma-dangle": "off",
+    "@typescript-eslint/comma-dangle": ["off"],
+    "object-curly-newline": "off"
+  }
+}
