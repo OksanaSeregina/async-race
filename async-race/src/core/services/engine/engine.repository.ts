@@ -1,5 +1,5 @@
 import { Endpoints } from '../../constants';
-import { IDrive, IEngine } from '../models';
+import { IDrive, IEngine, IEngineRequest } from '../models';
 
 /**
  * Engine repository service
@@ -19,7 +19,7 @@ export class EngineRepository {
    */
   public startStop(query: string): Promise<IEngine> {
     return fetch(`${Endpoints.AppHost}/engine?${query}`, {
-      method: 'GET',
+      method: 'PATCH',
     }).then((res) => res.json());
   }
 
@@ -28,7 +28,7 @@ export class EngineRepository {
    */
   public switchToDrive(query: string): Promise<IDrive> {
     return fetch(`${Endpoints.AppHost}/engine?${query}`, {
-      method: 'GET',
+      method: 'PATCH',
     }).then((res) => res.json());
   }
 }
