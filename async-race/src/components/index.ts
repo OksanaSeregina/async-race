@@ -1,4 +1,4 @@
-export * from './btn-control';
-export * from './btn-header';
+export * from './car-controller';
+export * from './header';
 export * from './car';
 export * from './garage';

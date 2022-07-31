@@ -1,21 +1,13 @@
 import { EngineService, ICar, IEngineRequest } from '../../core';
 import { getTemplate } from './car.view';
 
-const updateCarEvent = new CustomEvent('updateCar', {
-  detail: { data: {} as ICar },
-  bubbles: true,
-  cancelable: true,
-});
-
-const deleteCarEvent = new CustomEvent('deleteCar', {
-  detail: { data: {} as ICar },
-  bubbles: true,
-  cancelable: true,
-});
+const TRACK_SPACE = 11 * 16; // distance
 
 export class Car {
   private animationFrameId: number = 0;
   private svgElement: SVGSVGElement | null = null;
+  private selectCarEvent = new CustomEvent('selectCar', { detail: { data: {} as ICar } });
+  private deleteCarEvent = new CustomEvent('deleteCar', { detail: { data: {} as ICar } });
 
   constructor(private engineService: EngineService, private car: ICar, private root: HTMLElement) {}
 
@@ -86,30 +78,31 @@ export class Car {
 
   private listen(): void {
     const container: HTMLElement | null = document.getElementById(`${this.car.id}`);
-    container?.addEventListener('click', (event) => {
-      const isUpdate: boolean = (event.target as HTMLElement)?.classList.contains('app-car-item__update-button');
-      const isDelete: boolean = (event.target as HTMLElement)?.classList.contains('app-car-item__delete-button');
-      const isStart: boolean = (event.target as HTMLElement)?.classList.contains('app-car-item__start-button');
-      const isStop: boolean = (event.target as HTMLElement)?.classList.contains('app-car-item__stop-button');
+    container?.addEventListener('click', this.onClick.bind(this));
+  }
 
-      if (isUpdate) {
-        updateCarEvent.detail.data = this.car;
-        container.dispatchEvent(updateCarEvent);
-      } else if (isDelete) {
-        deleteCarEvent.detail.data = this.car;
-        container.dispatchEvent(deleteCarEvent);
-      } else if (isStart) {
-        void this.start();
-      } else if (isStop) {
-        void this.stop();
-      }
-    });
+  private onClick(event: Event): void {
+    const isSelect: boolean = (<HTMLElement>event.target).classList.contains('app-car-item__select-button');
+    const isDelete: boolean = (<HTMLElement>event.target).classList.contains('app-car-item__delete-button');
+    const isStart: boolean = (<HTMLElement>event.target).classList.contains('app-car-item__start-button');
+    const isStop: boolean = (<HTMLElement>event.target).classList.contains('app-car-item__stop-button');
+    if (isSelect) {
+      this.selectCarEvent.detail.data = this.car;
+      this.root?.dispatchEvent(this.selectCarEvent);
+    } else if (isDelete) {
+      this.deleteCarEvent.detail.data = this.car;
+      this.root?.dispatchEvent(this.deleteCarEvent);
+    } else if (isStart) {
+      void this.start();
+    } else if (isStop) {
+      void this.stop();
+    }
   }
 
   // Animation is based on https://learn.javascript.ru/js-animation
   private runCar(duration: number): void {
     const [{ clientWidth }] = document.getElementsByClassName('app-car');
-    const distance: number = clientWidth - (this.svgElement as SVGElement).clientWidth;
+    const distance: number = clientWidth - (this.svgElement as SVGElement).clientWidth - TRACK_SPACE;
 
     const start = performance.now();
     const draw = (progress: number) => {

@@ -50,6 +50,6 @@
   font-weight: 700;
 }
 
-.button:hover {
+.button:hover:not(:disabled) {
   background-color: #cdf76f;
 }

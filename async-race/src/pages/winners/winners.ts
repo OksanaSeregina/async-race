@@ -1,6 +1,6 @@
-import { getTemplate } from './btn-control.view';
+import { getTemplate } from './winners.view';
 
-export class BtnControl {
+export class Winners {
   constructor(private root: HTMLElement | null) {}
 
   private element: HTMLElement = document.createElement('div');
@@ -18,6 +18,6 @@ export class BtnControl {
   }
 
   private attachElement(): void {
-    this.root?.prepend(this.element);
+    this.root?.append(this.element);
   }
 }

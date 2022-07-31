@@ -1,7 +1,47 @@
 .app-car {
+  margin: 2rem 0;
+  box-sizing: border-box;
   border-bottom: 0.1rem solid #000;
 }
 
 .app-car-item {
-  width: 5rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 2rem;
+
+  &__edit {
+    display: flex;
+    flex-flow: nowrap;
+    height: 2rem;
+    align-items: center;
+
+    * {
+      margin: 0 0.5rem;
+    }
+  }
+
+  &__control {
+    display: flex;
+    flex-flow: nowrap;
+    height: 2rem;
+    width: 10rem;
+    align-items: center;
+
+    * {
+      margin: 0 0.5rem;
+    }
+  }
+
+  svg {
+    height: 5rem;
+    pointer-events: none;
+  }
+
+  .flag {
+    position: absolute;
+    height: 2rem;
+    right: 6rem;
+  }
 }

@@ -6,3 +6,5 @@ export enum Endpoints {
 }
 
 export const STORAGE_KEY = 'async-race';
+
+export const BASE_COLOR = '#7fff00';
