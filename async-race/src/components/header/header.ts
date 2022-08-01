@@ -10,7 +10,7 @@ export class Header {
   private template: string = getTemplate();
   private garageService = new GarageService(new GarageRepository());
   private engineService = new EngineService(new EngineRepository());
-  private garage: Garage = new Garage(this.garageService, this.engineService);
+  // private garage: Garage = new Garage(this.garageService, this.engineService);
   private carControlller: CarController = new CarController(document.querySelector('.app-garage'));
   private winners: Winners = new Winners(document.querySelector('#root'));
 
@@ -39,7 +39,7 @@ export class Header {
         const page = event.target;
         switch (page) {
           case pageGarage:
-            void this.garage.init();
+            // void this.garage.init();
             this.carControlller.init();
             break;
           case pageWinners:

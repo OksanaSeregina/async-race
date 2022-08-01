@@ -1,15 +1,14 @@
-import { EngineService, GarageService, ICar } from '../../core';
-import { generateRandomColor, generateRandomName, isCustomEvent } from '../../shared';
+import { CAR_PER_PAGE, EngineService, GarageService, ICar, RANDOM_COUNT } from '../../core';
+import { generateChunks, generateRandomColor, generateRandomName, isCustomEvent } from '../../shared';
 import { Car } from '../car';
+import { Pagination } from '../pagination';
 import { getTemplate } from './garage.view';
-
-const RANDOM_COUNT = 100;
-const CAR_PER_PAGE = 7;
 
 export class Garage {
   private root: HTMLElement | null = null;
-  private title: HTMLElement | null = null;
-  private garagePages = [];
+  private titleEl: HTMLElement | null = null;
+  private pageEl: HTMLElement | null = null;
+  private chunks: Array<Array<Car>> = [];
 
   get element(): HTMLElement | null {
     return this.root;
@@ -21,8 +20,8 @@ export class Garage {
   }
   set count(value: number) {
     this._count = value;
-    if (this.title) {
-      this.title.innerText = `Garage (${value})`;
+    if (this.titleEl) {
+      this.titleEl.innerText = `Garage (${value})`;
     }
   }
 
@@ -33,13 +32,11 @@ export class Garage {
   set cars(value: Array<Car>) {
     this._cars = value;
     this.count = this._cars.length;
-    this.cars.forEach((car) => {
-      car.destroy();
-      car.render();
-    });
+    this.chunks = generateChunks<Car>(this.cars, CAR_PER_PAGE);
+    this.updateView();
   }
 
-  constructor(private garageService: GarageService, private engineService: EngineService) {}
+  constructor(private garageService: GarageService, private engineService: EngineService, private pagination: Pagination) {}
 
   public async init(): Promise<void> {
     this.initGarage();
@@ -57,8 +54,19 @@ export class Garage {
     const root: HTMLElement | null = document.getElementById('root');
     const template: string = getTemplate();
     (root as HTMLElement).innerHTML = template;
+
     this.root = <HTMLElement>document.querySelector('.app-garage');
-    this.title = <HTMLElement>document.querySelector('[data-role="count"]');
+    this.titleEl = <HTMLElement>document.querySelector('[data-role="count"]');
+    this.pageEl = <HTMLElement>document.querySelector('[data-role="page"]');
+  }
+
+  private updateView(): void {
+    const page = this.pagination.update({ selected: 'garage', max: this.chunks.length });
+    this.cars.forEach((car) => car.destroy());
+    this.chunks[page]?.forEach((car) => car.render());
+    if (this.pageEl) {
+      this.pageEl.innerText = `Page #${page + 1}`;
+    }
   }
 
   private listen(): void {
@@ -66,6 +74,7 @@ export class Garage {
     (<HTMLElement>this.root).addEventListener('updateCar', this.onUpdateCar.bind(this));
     (<HTMLElement>this.root).addEventListener('deleteCar', this.onDeleteCar.bind(this));
     (<HTMLElement>this.root).addEventListener('generateCar', this.onGenerateCar.bind(this));
+    (<HTMLElement>this.root).addEventListener('paginate', this.onPaginate.bind(this));
   }
 
   private onCreateCar(event: Event): void {
@@ -99,6 +108,13 @@ export class Garage {
       const request: Omit<ICar, 'id'> = { name: generateRandomName(), color: generateRandomColor() };
       void this.createCar(request);
     }
+  }
+
+  private onPaginate(event: Event): void {
+    if (!isCustomEvent(event)) {
+      throw new Error('Not a custom event');
+    }
+    void this.updateView();
   }
 
   private async updateCar(request: ICar): Promise<void> {

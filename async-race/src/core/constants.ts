@@ -8,3 +8,5 @@ export enum Endpoints {
 export const STORAGE_KEY = 'async-race';
 
 export const BASE_COLOR = '#7fff00';
+export const RANDOM_COUNT = 100;
+export const CAR_PER_PAGE = 7;
