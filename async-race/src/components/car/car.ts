@@ -73,12 +73,18 @@ export class Car {
 
   public destroy(): void {
     const container = document.getElementById(`${this.car.id}`);
+    this.unlisten();
     container?.parentNode?.removeChild(container);
   }
 
   private listen(): void {
     const container: HTMLElement | null = document.getElementById(`${this.car.id}`);
     container?.addEventListener('click', this.onClick.bind(this));
+  }
+
+  private unlisten(): void {
+    const container: HTMLElement | null = document.getElementById(`${this.car.id}`);
+    container?.removeEventListener('click', this.onClick.bind(this));
   }
 
   private onClick(event: Event): void {

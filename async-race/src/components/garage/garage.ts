@@ -4,10 +4,12 @@ import { Car } from '../car';
 import { getTemplate } from './garage.view';
 
 const RANDOM_COUNT = 100;
+const CAR_PER_PAGE = 7;
 
 export class Garage {
   private root: HTMLElement | null = null;
   private title: HTMLElement | null = null;
+  private garagePages = [];
 
   get element(): HTMLElement | null {
     return this.root;
@@ -31,6 +33,10 @@ export class Garage {
   set cars(value: Array<Car>) {
     this._cars = value;
     this.count = this._cars.length;
+    this.cars.forEach((car) => {
+      car.destroy();
+      car.render();
+    });
   }
 
   constructor(private garageService: GarageService, private engineService: EngineService) {}
@@ -45,7 +51,6 @@ export class Garage {
     const dbCars: Array<ICar> = await this.garageService.getCars();
     const cars: Array<Car> = dbCars.map((car) => new Car(this.engineService, car, <HTMLElement>this.root));
     this.cars = [...this.cars, ...cars];
-    this.cars.forEach((car) => car.render());
   }
 
   private initGarage(): void {
@@ -119,6 +124,5 @@ export class Garage {
     const response = await this.garageService.createCar(request);
     const car: Car = new Car(this.engineService, response, <HTMLElement>this.root);
     this.cars = [...this.cars, car];
-    car.render();
   }
 }
