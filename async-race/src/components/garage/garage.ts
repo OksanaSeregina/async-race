@@ -7,10 +7,30 @@ const RANDOM_COUNT = 100;
 
 export class Garage {
   private root: HTMLElement | null = null;
-  private cars: Array<Car> = [];
+  private title: HTMLElement | null = null;
 
   get element(): HTMLElement | null {
     return this.root;
+  }
+
+  private _count: number = 0;
+  get count(): number {
+    return this._count;
+  }
+  set count(value: number) {
+    this._count = value;
+    if (this.title) {
+      this.title.innerText = `Garage (${value})`;
+    }
+  }
+
+  private _cars: Array<Car> = [];
+  get cars(): Array<Car> {
+    return this._cars;
+  }
+  set cars(value: Array<Car>) {
+    this._cars = value;
+    this.count = this._cars.length;
   }
 
   constructor(private garageService: GarageService, private engineService: EngineService) {}
@@ -33,6 +53,7 @@ export class Garage {
     const template: string = getTemplate();
     (root as HTMLElement).innerHTML = template;
     this.root = <HTMLElement>document.querySelector('.app-garage');
+    this.title = <HTMLElement>document.querySelector('[data-role="count"]');
   }
 
   private listen(): void {
