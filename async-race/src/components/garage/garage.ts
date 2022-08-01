@@ -36,36 +36,43 @@ export class Garage {
   }
 
   private listen(): void {
-    (this.root as HTMLElement).addEventListener('createCar', (event: Event) => {
-      if (!isCustomEvent(event)) {
-        throw new Error('Not a custom event');
-      }
-      void this.createCar((<{ data: Omit<ICar, 'id'> }>event.detail).data);
-    });
-    (this.root as HTMLElement).addEventListener('updateCar', (event: Event) => {
-      if (!isCustomEvent(event)) {
-        throw new Error('Not a custom event');
-      }
-      const request: ICar = (<{ data: ICar }>event.detail).data;
-      void this.updateCar(request);
-    });
-    (this.root as HTMLElement).addEventListener('deleteCar', (event: Event) => {
-      if (!isCustomEvent(event)) {
-        throw new Error('Not a custom event');
-      }
-      const request: ICar = (<{ data: ICar }>event.detail).data;
-      void this.deleteCar(request);
-    });
+    (<HTMLElement>this.root).addEventListener('createCar', this.onCreateCar.bind(this));
+    (<HTMLElement>this.root).addEventListener('updateCar', this.onUpdateCar.bind(this));
+    (<HTMLElement>this.root).addEventListener('deleteCar', this.onDeleteCar.bind(this));
+    (<HTMLElement>this.root).addEventListener('generateCar', this.onGenerateCar.bind(this));
+  }
 
-    (this.root as HTMLElement).addEventListener('generateCar', (event: Event) => {
-      if (!isCustomEvent(event)) {
-        throw new Error('Not a custom event');
-      }
-      for (let i = 0; i < RANDOM_COUNT; i++) {
-        const request: Omit<ICar, 'id'> = { name: generateRandomName(), color: generateRandomColor() };
-        void this.createCar(request);
-      }
-    });
+  private onCreateCar(event: Event): void {
+    if (!isCustomEvent(event)) {
+      throw new Error('Not a custom event');
+    }
+    void this.createCar((<{ data: Omit<ICar, 'id'> }>event.detail).data);
+  }
+
+  private onUpdateCar(event: Event): void {
+    if (!isCustomEvent(event)) {
+      throw new Error('Not a custom event');
+    }
+    const request: ICar = (<{ data: ICar }>event.detail).data;
+    void this.updateCar(request);
+  }
+
+  private onDeleteCar(event: Event): void {
+    if (!isCustomEvent(event)) {
+      throw new Error('Not a custom event');
+    }
+    const request: ICar = (<{ data: ICar }>event.detail).data;
+    void this.deleteCar(request);
+  }
+
+  private onGenerateCar(event: Event): void {
+    if (!isCustomEvent(event)) {
+      throw new Error('Not a custom event');
+    }
+    for (let i = 0; i < RANDOM_COUNT; i++) {
+      const request: Omit<ICar, 'id'> = { name: generateRandomName(), color: generateRandomColor() };
+      void this.createCar(request);
+    }
   }
 
   private async updateCar(request: ICar): Promise<void> {
