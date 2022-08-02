@@ -16,9 +16,9 @@ export function getTemplate(): string {
                 <button class="button" disabled data-role="${Role.Update}">Update</button>
               </div>
             </div>
-            <div class="race-control">
-              <button class="button" id="race">Race</button>
-              <button class="button" id="reset">Reset</button>
+            <div class="race-control" id="control">
+              <button class="button" id="race" data-role="${Role.Race}">Race</button>
+              <button class="button" id="reset" data-role="${Role.Reset}">Reset</button>
               <button class="button" id="generate" data-role="${Role.Generate}">Generate cars</button>
             </div>
           </div>

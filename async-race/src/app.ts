@@ -10,4 +10,9 @@ export class App {
     this.header.init();
     this.pagination.init();
   }
+
+  public static log(value: PromiseSettledResult<void | { id: number; duration: number }>[]): void {
+    const log = value.filter((item) => item.status === 'fulfilled' && item.value);
+    console.log(log);
+  }
 }

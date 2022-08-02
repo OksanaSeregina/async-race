@@ -21,37 +21,27 @@ export class Car {
     return this; // returns this for using with Garage.updateCar()
   }
 
-  public async start(): Promise<void> {
-    const request: IEngineRequest = {
-      id: this.car.id,
-      status: 'started',
-    };
+  public async start(): Promise<{ id: number; duration: number } | void> {
+    const request: IEngineRequest = { id: this.car.id, status: 'started' };
     const { velocity, distance } = await this.engineService.startStop(request);
     const duration: number = distance / velocity;
     this.runCar(duration);
-    await this.switchToDrive();
+    return this.switchToDrive().then((result) => (result ? { id: result.id, duration } : undefined));
   }
 
   public async stop(): Promise<void> {
-    const request: IEngineRequest = {
-      id: this.car.id,
-      status: 'stopped',
-    };
+    const request: IEngineRequest = { id: this.car.id, status: 'stopped' };
     this.stopCar();
     await this.engineService.startStop(request);
     (this.svgElement as SVGElement).style.transform = 'translateX(0px)';
   }
 
-  public async switchToDrive(): Promise<void> {
-    try {
-      const request: IEngineRequest = {
-        id: this.car.id,
-        status: 'drive',
-      };
-      await this.engineService.switchToDrive(request);
-    } catch {
-      this.stopCar();
-    }
+  public switchToDrive(): Promise<{ id: number } | void> {
+    const request: IEngineRequest = { id: this.car.id, status: 'drive' };
+    return this.engineService
+      .switchToDrive(request)
+      .then(() => ({ id: this.car.id }))
+      .catch(() => this.stopCar());
   }
 
   public render(car?: ICar): void {

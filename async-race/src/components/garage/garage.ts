@@ -1,3 +1,4 @@
+import { App } from '../../app';
 import { CAR_PER_PAGE, EngineService, GarageService, ICar, RANDOM_COUNT } from '../../core';
 import { generateChunks, generateRandomColor, generateRandomName, isCustomEvent } from '../../shared';
 import { Car } from '../car';
@@ -75,6 +76,8 @@ export class Garage {
     (<HTMLElement>this.root).addEventListener('deleteCar', this.onDeleteCar.bind(this));
     (<HTMLElement>this.root).addEventListener('generateCar', this.onGenerateCar.bind(this));
     (<HTMLElement>this.root).addEventListener('paginate', this.onPaginate.bind(this));
+    (<HTMLElement>this.root).addEventListener('startRace', this.onStartRace.bind(this));
+    (<HTMLElement>this.root).addEventListener('resetRace', this.onResetRace.bind(this));
   }
 
   private onCreateCar(event: Event): void {
@@ -115,6 +118,21 @@ export class Garage {
       throw new Error('Not a custom event');
     }
     void this.updateView();
+  }
+
+  private onStartRace(event: Event): void {
+    if (!isCustomEvent(event)) {
+      throw new Error('Not a custom event');
+    }
+    const racers: Promise<{ id: number; duration: number } | void>[] = this.chunks[this.pagination.garage]?.map((car) => car.start());
+    void Promise.allSettled(racers).then((result) => App.log(result));
+  }
+
+  private onResetRace(event: Event): void {
+    if (!isCustomEvent(event)) {
+      throw new Error('Not a custom event');
+    }
+    this.chunks[this.pagination.garage]?.forEach((car) => void car.stop());
   }
 
   private async updateCar(request: ICar): Promise<void> {

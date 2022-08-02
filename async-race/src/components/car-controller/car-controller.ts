@@ -12,6 +12,8 @@ export class CarController {
   private createCarEvent = new CustomEvent('createCar', { detail: { data: {} as Omit<ICar, 'id'> } });
   private updateCarEvent = new CustomEvent('updateCar', { detail: { data: {} as ICar } });
   private generateCarEvent = new CustomEvent('generateCar');
+  private raceCarEvent = new CustomEvent('startRace');
+  private resetCarEvent = new CustomEvent('resetRace');
 
   constructor(private root: HTMLElement | null) {}
 
@@ -38,11 +40,13 @@ export class CarController {
     const [updateName, updateColor] = <HTMLCollectionOf<HTMLInputElement>>this.updateEl;
     const [createBtn] = <HTMLCollectionOf<HTMLInputElement>>document.getElementById('create')?.getElementsByTagName('button');
     const [updateBtn] = <HTMLCollectionOf<HTMLInputElement>>document.getElementById('update')?.getElementsByTagName('button');
-    const generateBtn = <HTMLButtonElement>document.getElementById('generate');
+    const [raceBtn, resetBtn, generateBtn] = <HTMLCollectionOf<HTMLButtonElement>>(
+      document.getElementById('control')?.getElementsByTagName('button')
+    );
 
     createName.addEventListener('input', () => (createBtn.disabled = !createName.value));
     updateName.addEventListener('input', () => [updateName, updateColor, updateBtn].forEach((el) => (el.disabled = !updateName.value)));
-    [createBtn, updateBtn, generateBtn].forEach((btn) => btn.addEventListener('click', this.onClick.bind(this)));
+    [createBtn, updateBtn, raceBtn, resetBtn, generateBtn].forEach((btn) => btn.addEventListener('click', this.onClick.bind(this)));
     this.root?.addEventListener('selectCar', this.onSelect.bind(this));
   }
 
@@ -75,6 +79,12 @@ export class CarController {
         break;
       case Role.Generate:
         this.root?.dispatchEvent(this.generateCarEvent);
+        break;
+      case Role.Race:
+        this.root?.dispatchEvent(this.raceCarEvent);
+        break;
+      case Role.Reset:
+        this.root?.dispatchEvent(this.resetCarEvent);
         break;
     }
   }
