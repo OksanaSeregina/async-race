@@ -1,23 +1,27 @@
 import { getTemplate } from './winners.view';
 
 export class Winners {
-  constructor(private root: HTMLElement | null) {}
-
-  private element: HTMLElement = document.createElement('div');
+  private root: HTMLElement = document.createElement('div');
   private template: string = getTemplate();
+
+  get element() {
+    return this.root;
+  }
+
+  constructor(private appRoot: HTMLElement | null) {}
 
   public init(): void {
     this.render();
   }
 
   private render(): void {
-    this.element.innerHTML = this.template;
-    if (this.root) {
+    this.root.innerHTML = this.template;
+    if (this.appRoot) {
       this.attachElement();
     }
   }
 
   private attachElement(): void {
-    this.root?.append(this.element);
+    this.appRoot?.append(this.element);
   }
 }

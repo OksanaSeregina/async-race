@@ -15,3 +15,13 @@ body {
 .winners {
   background-color: $purple;
 }
+
+.hidden {
+  position: absolute;
+  left: -9999px;
+}
+
+.visible {
+  position: relative;
+  left: 0;
+}

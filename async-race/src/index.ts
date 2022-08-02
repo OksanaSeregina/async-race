@@ -14,5 +14,5 @@ const winners: Winners = new Winners(root);
 const pagination: Pagination = new Pagination(root);
 const garage: Garage = new Garage(garageService, engineService, pagination);
 
-const app = new App(header, garage, winners, pagination);
+const app = new App(root, header, garage, winners, pagination);
 void app.start();

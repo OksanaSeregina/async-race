@@ -6,6 +6,5 @@ export function getTemplate(): string {
     <h2 data-role="count"></h2>
     <h3 data-role="page"></h2>
   </div>
-  <div data-role="pagination"></div>
   `;
 }
