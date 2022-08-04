@@ -1,3 +1,5 @@
+@import '../../colors.scss';
+
 .app-car {
   margin: 2rem 0;
   box-sizing: border-box;
@@ -44,4 +46,19 @@
     height: 2rem;
     right: 6rem;
   }
+}
+
+.car-button {
+  width: 64px;
+  border-radius: 5px;
+  border-color: $brightGreen;
+  color: $dark;
+  box-shadow: 0 0 40px 40px $brightGreen inset, 0 0 0 0 $brightGreen;
+  -webkit-transition: all 150ms ease-in-out;
+  transition: all 150ms ease-in-out;
+}
+.car-button:hover {
+  cursor: pointer;
+  color: $colorText;
+  box-shadow: 0 0 5px 0 $brightGreen inset, 0 0 5px 2px $brightGreen;
 }

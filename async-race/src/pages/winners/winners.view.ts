@@ -2,9 +2,9 @@ import './winners.scss';
 
 export function getTemplate() {
   return `
-          <h1>Winners 1</h1>
-          <h2>Page #1</h2>
-          <table class="table">
+          <h1 class="txt-center">Winners 1</h1>
+          <h2 class="txt-center">Page #1</h2>
+          <table class="table txt-center">
             <thead>
               <th>Number</th>
               <th>Car</th>

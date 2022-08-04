@@ -2,6 +2,8 @@ import { CarController, Garage, Header, Pagination } from './components';
 import { Winners } from './pages';
 
 export class App {
+  private body = <HTMLElement>document.querySelector('body');
+
   constructor(
     private root: HTMLElement,
     private header: Header,
@@ -34,11 +36,15 @@ export class App {
     this.winners.element?.classList.remove('visible');
     this.winners.element?.classList.add('hidden');
     this.garage.element?.classList.add('visible');
+    this.body?.classList.remove('winners');
+    this.body?.classList.add('garage');
   }
 
   private onRouteWinners(): void {
     this.garage.element?.classList.remove('visible');
     this.garage.element?.classList.add('hidden');
     this.winners.element?.classList.add('visible');
+    this.body?.classList.remove('garage');
+    this.body?.classList.add('winners');
   }
 }

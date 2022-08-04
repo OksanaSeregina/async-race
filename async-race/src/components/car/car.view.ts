@@ -5,14 +5,14 @@ export function getTemplate(car: ICar): string {
   const { name, color } = car;
   return `
       <div class="app-car-item__edit">
-        <button class="app-car-item__select-button">Select</button>
-        <button class="app-car-item__delete-button">Delete</button>
+        <button class="app-car-item__select-button car-button">Select</button>
+        <button class="app-car-item__delete-button car-button">Delete</button>
         <h3>${name}</h3>
       </div>
       <div class="app-car-item">
         <div class="app-car-item__control">
-          <button class="app-car-item__start-button">Start</button>
-          <button class="app-car-item__stop-button">Stop</button>
+          <button class="app-car-item__start-button car-button">Start</button>
+          <button class="app-car-item__stop-button car-button">Stop</button>
         </div>
         <svg
           version="1.1"

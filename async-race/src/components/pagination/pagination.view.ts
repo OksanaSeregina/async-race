@@ -1,4 +1,5 @@
 import { PaginationRole } from './models';
+import './pagination.scss';
 
 export function getTemplate(): string {
   return `
