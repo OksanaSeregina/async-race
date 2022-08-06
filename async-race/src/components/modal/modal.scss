@@ -27,13 +27,14 @@
   right: 30px;
   top: 2px;
   cursor: pointer;
+  font-size: 60px;
 }
 
 .popup-content {
   display: flex;
+  flex-flow: column wrap;
   justify-content: center;
   padding: 100px 0;
-  font-size: 60px;
 }
 
 @media screen and (max-width: 1279px) {

@@ -1,5 +1,5 @@
 import { App } from './app';
-import { Garage, Header, Pagination } from './components';
+import { Garage, Header, Pagination, Modal } from './components';
 import { GarageService, GarageRepository, EngineService, EngineRepository } from './core';
 import { Winners } from './pages';
 import './global.scss';
@@ -13,6 +13,7 @@ const header: Header = new Header(root);
 const winners: Winners = new Winners(root);
 const pagination: Pagination = new Pagination(root);
 const garage: Garage = new Garage(garageService, engineService, pagination);
+const modal: Modal = new Modal(root);
 
-const app = new App(root, header, garage, winners, pagination);
+const app = new App(root, header, garage, winners, pagination, modal);
 void app.start();

@@ -15,18 +15,26 @@ export class Car {
     return this.car.id;
   }
 
+  public get color(): string {
+    return this.car.color;
+  }
+
+  public get name(): string {
+    return this.car.name;
+  }
+
   public updateCar(car: ICar): Car {
     this.car = car;
     this.render(car);
     return this; // returns this for using with Garage.updateCar()
   }
 
-  public async start(): Promise<{ id: number; duration: number } | void> {
+  public async start(): Promise<{ id: number; duration: number; name: string; color: string } | void> {
     const request: IEngineRequest = { id: this.car.id, status: 'started' };
     const { velocity, distance } = await this.engineService.startStop(request);
     const duration: number = distance / velocity;
     this.runCar(duration);
-    return this.switchToDrive().then((result) => (result ? { id: result.id, duration } : undefined));
+    return this.switchToDrive().then((result) => (result ? { id: result.id, duration, name: this.name, color: this.color } : undefined));
   }
 
   public async stop(): Promise<void> {

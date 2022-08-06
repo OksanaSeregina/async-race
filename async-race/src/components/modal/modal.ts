@@ -1,15 +1,13 @@
-import { BaseComponent } from '../base-component';
 import { getTemplate } from './modal.view';
 
-export class Modal extends BaseComponent {
+export class Modal {
+  private template: string = getTemplate();
+  private element: HTMLElement = document.createElement('div');
   private static _instance: Modal;
   private _isHidden: boolean = true;
   private modalElement: HTMLElement | null = null;
   private messageElement: HTMLElement | null = null;
   private closeButton: HTMLElement | null = null;
-
-  protected element: HTMLElement = document.createElement('div');
-  protected template: string = getTemplate();
 
   static get instance() {
     return Modal._instance;
@@ -19,18 +17,17 @@ export class Modal extends BaseComponent {
     return this._isHidden;
   }
 
-  constructor(root: HTMLElement | null) {
-    super(root);
+  constructor(private root: HTMLElement | null) {
     if (!Modal._instance) {
       Modal._instance = this;
     }
     return Modal._instance;
   }
 
-  public show(message: string): void {
+  public show(title = '', message: string): void {
     if (this.messageElement) {
       this._isHidden = false;
-      this.messageElement.textContent = message;
+      this.messageElement.innerHTML = `<h2>${title}</h2>${message}`;
     }
     this.modalElement?.classList.remove('hidden');
   }
@@ -43,8 +40,19 @@ export class Modal extends BaseComponent {
     this.modalElement?.classList.add('hidden');
   }
 
-  protected attachElement(): void {
-    super.attachElement();
+  public init(): void {
+    this.render();
+  }
+
+  private render(): void {
+    this.element.innerHTML = this.template;
+    if (this.root) {
+      this.attachElement();
+    }
+  }
+
+  private attachElement(): void {
+    this.root?.appendChild(this.element);
     this.modalElement = document.querySelector('[data-modal-id="modal"]');
     this.messageElement = document.querySelector('[data-modal-id="message"]');
     this.closeButton = document.querySelector('[data-modal-id="close"]');

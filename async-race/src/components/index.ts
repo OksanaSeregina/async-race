@@ -3,3 +3,4 @@ export * from './header';
 export * from './car';
 export * from './garage';
 export * from './pagination';
+export * from './modal';

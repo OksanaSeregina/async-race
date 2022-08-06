@@ -1,4 +1,3 @@
-import { App } from '../../app';
 import { CAR_PER_PAGE, EngineService, GarageService, ICar, RANDOM_COUNT } from '../../core';
 import { generateChunks, generateRandomColor, generateRandomName, isCustomEvent } from '../../shared';
 import { Car } from '../car';
@@ -124,8 +123,16 @@ export class Garage {
     if (!isCustomEvent(event)) {
       throw new Error('Not a custom event');
     }
-    const racers: Promise<{ id: number; duration: number } | void>[] = this.chunks[this.pagination.garage]?.map((car) => car.start());
-    void Promise.allSettled(racers).then((result) => App.log(result));
+    const racers: Promise<{ id: number; duration: number; name: string; color: string } | void>[] = this.chunks[
+      this.pagination.garage
+    ]?.map((car) => car.start());
+    void Promise.allSettled(racers).then((value) => {
+      const data = value
+        .filter((item) => item.status === 'fulfilled' && item.value)
+        .map((item) => (({ ...item } as { value: { id: number; duration: number; name: string; color: string } }).value))
+        .sort((a, b) => a.duration - b.duration);
+      this.root?.dispatchEvent(new CustomEvent('completeRaceEvent', { detail: { data } }));
+    });
   }
 
   private onResetRace(event: Event): void {
