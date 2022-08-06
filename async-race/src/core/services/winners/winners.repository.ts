@@ -1,9 +1,6 @@
 import { Endpoints } from '../../constants';
+import { headers } from '../garage';
 import { IWinners } from '../models';
-
-export const headers: HeadersInit = {
-  'Content-Type': 'application/json',
-};
 
 function getResponse<T>(response: Response, result?: Promise<T>): Promise<T> {
   const isNotSuccess = !response.ok;

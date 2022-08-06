@@ -1,4 +1,11 @@
+import { renderCar } from '../../shared';
 import './winners.scss';
+
+export function getWinnerView(winner: { id: number; duration: number; name: string; color: string }, index: number) {
+  return `<div class="win-win"><span>${index + 1}</span> ${renderCar(winner.id, winner.color, '5rem')} ${winner.name} <span>${(
+    winner.duration / 1000
+  ).toFixed(1)} s</span></div>`;
+}
 
 export function getTemplate() {
   return `
