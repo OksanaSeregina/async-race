@@ -1,17 +1,17 @@
 import { Endpoints } from '../../constants';
-import { IDrive, IEngine, IEngineRequest } from '../models';
+import { IDrive, IEngine } from '../models';
 
 /**
- * Engine repository service
+ * Engine Api service
  */
-export class EngineRepository {
-  private static _instance: EngineRepository;
+export class EngineApi {
+  private static _instance: EngineApi;
 
   constructor() {
-    if (!EngineRepository._instance) {
-      EngineRepository._instance = this;
+    if (!EngineApi._instance) {
+      EngineApi._instance = this;
     }
-    return EngineRepository._instance;
+    return EngineApi._instance;
   }
 
   /**

@@ -14,16 +14,16 @@ function getResponse<T>(response: Response, result?: Promise<T>): Promise<T> {
 }
 
 /**
- * Garage repository service
+ * Garage Api service
  */
-export class GarageRepository {
-  private static _instance: GarageRepository;
+export class GarageApi {
+  private static _instance: GarageApi;
 
   constructor() {
-    if (!GarageRepository._instance) {
-      GarageRepository._instance = this;
+    if (!GarageApi._instance) {
+      GarageApi._instance = this;
     }
-    return GarageRepository._instance;
+    return GarageApi._instance;
   }
 
   /**
