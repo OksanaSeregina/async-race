@@ -1,5 +1,5 @@
-import { ICar } from '../models';
-import { GarageApi } from './garage.api';
+import { GarageApi } from '../../api';
+import { ICar } from '../../models';
 
 /**
  * Garage facade service

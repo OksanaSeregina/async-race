@@ -1,8 +1,7 @@
-export function renderCar(color: string, width = 'auto', height = 'auto'): string {
+export function renderCar(color: string, width: string): string {
   return `
   <svg
     width = ${width}
-    height: ${height}
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink"

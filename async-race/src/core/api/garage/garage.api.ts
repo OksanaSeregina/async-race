@@ -1,5 +1,5 @@
 import { Endpoints } from '../../constants';
-import { ICar } from '../models';
+import { ICar } from '../../models';
 
 export const headers: HeadersInit = {
   'Content-Type': 'application/json',

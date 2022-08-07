@@ -1,7 +1,7 @@
 import { Car, Modal, Pagination } from '../../components';
 import { WINNERS_PER_PAGE, IWinners, WinnersService } from '../../core';
 import { generateChunks, isCustomEvent } from '../../shared';
-import { Garage } from '../garage';
+import { Data, Garage } from '../garage';
 import { Sort } from './model';
 import { getTemplate, getWinnerRow, getWinnerView } from './winners.view';
 
@@ -105,10 +105,10 @@ export class Winners {
     if (!isCustomEvent(event)) {
       throw new Error('Not a custom event');
     }
-    const winners = (<{ data: { id: number; duration: number; name: string; color: string }[] }>event.detail).data;
-    const tpl = winners.map((winner, index) => getWinnerView(winner, index)).join('');
-    this.modal.show('RACE RESULTS', tpl);
-    const [{ duration, id }] = winners;
+    const source = (<{ data: Data }>event.detail).data;
+    const winner = { ...source, duration: Number((source.duration / 1000).toFixed(1)) };
+    this.modal.show('RACE RESULTS', getWinnerView(winner));
+    const { duration, id } = winner;
     void this.updateWinners({ id, duration });
   }
 

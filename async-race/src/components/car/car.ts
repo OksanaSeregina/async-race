@@ -34,7 +34,7 @@ export class Car {
     const { velocity, distance } = await this.engineService.startStop(request);
     const duration: number = distance / velocity;
     this.runCar(duration);
-    return this.switchToDrive().then((result) => (result ? { id: result.id, duration, name: this.name, color: this.color } : undefined));
+    return this.switchToDrive().then(() => ({ id: this.car.id, duration, name: this.name, color: this.color }));
   }
 
   public async stop(): Promise<void> {
@@ -48,8 +48,11 @@ export class Car {
     const request: IEngineRequest = { id: this.car.id, status: 'drive' };
     return this.engineService
       .switchToDrive(request)
-      .then(() => ({ id: this.car.id }))
-      .catch(() => this.stopCar());
+      .then(() => Promise.resolve())
+      .catch(() => {
+        this.stopCar();
+        throw new Error();
+      });
   }
 
   public render(car?: ICar): void {

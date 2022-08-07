@@ -1,6 +1,6 @@
 import { Endpoints } from '../../constants';
+import { IWinners } from '../../models';
 import { headers } from '../garage';
-import { IWinners } from '../models';
 
 function getResponse<T>(response: Response, result?: Promise<T>): Promise<T> {
   const isNotSuccess = !response.ok;
@@ -10,14 +10,14 @@ function getResponse<T>(response: Response, result?: Promise<T>): Promise<T> {
   return result || response.json();
 }
 
-export class WinnersRepository {
-  private static _instance: WinnersRepository;
+export class WinnersApi {
+  private static _instance: WinnersApi;
 
   constructor() {
-    if (!WinnersRepository._instance) {
-      WinnersRepository._instance = this;
+    if (!WinnersApi._instance) {
+      WinnersApi._instance = this;
     }
-    return WinnersRepository._instance;
+    return WinnersApi._instance;
   }
 
   /* Returns json data about winners */

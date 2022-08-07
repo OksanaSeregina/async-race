@@ -1,5 +1,5 @@
-import { IWinners } from '../models';
-import { WinnersRepository } from './winners.repository';
+import { WinnersApi } from '../../api';
+import { IWinners } from '../../models';
 
 /**
  * Winners service
@@ -7,7 +7,7 @@ import { WinnersRepository } from './winners.repository';
 export class WinnersService {
   private static _instance: WinnersService;
 
-  constructor(private winnersRepository: WinnersRepository) {
+  constructor(private api: WinnersApi) {
     if (!WinnersService._instance) {
       WinnersService._instance = this;
     }
@@ -16,26 +16,26 @@ export class WinnersService {
 
   /* Returns winners */
   public getWinners(query?: string): Promise<Array<IWinners>> {
-    return this.winnersRepository.getWinners(query);
+    return this.api.getWinners(query);
   }
 
   /* Returns a winner */
   public getWinner(id: number): Promise<IWinners> {
-    return this.winnersRepository.getWinner(id);
+    return this.api.getWinner(id);
   }
 
   /* Create a winner */
   public createWinner(request: IWinners): Promise<IWinners> {
-    return this.winnersRepository.createWinner(request);
+    return this.api.createWinner(request);
   }
 
   /* Delete a winner */
   public deleteWinner(id: number): Promise<void> {
-    return this.winnersRepository.deleteWinner(id);
+    return this.api.deleteWinner(id);
   }
 
   /* Update a winner */
   public updateWinner(request: IWinners): Promise<IWinners> {
-    return this.winnersRepository.updateWinner(request);
+    return this.api.updateWinner(request);
   }
 }

@@ -1,5 +1,5 @@
-import { EngineApi } from './engine.api';
-import { IDrive, IEngine, IEngineRequest } from '../models';
+import { EngineApi } from '../../api';
+import { IDrive, IEngine, IEngineRequest } from '../../models';
 
 /**
  * Engine facade service

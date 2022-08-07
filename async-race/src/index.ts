@@ -1,6 +1,6 @@
 import { App } from './app';
 import { Header, Pagination, Modal } from './components';
-import { GarageService, GarageApi, EngineService, EngineApi, WinnersService, WinnersRepository } from './core';
+import { GarageService, GarageApi, EngineService, EngineApi, WinnersService, WinnersApi } from './core';
 import { Garage, Winners } from './pages';
 import './global.scss';
 
@@ -8,7 +8,7 @@ const root = <HTMLElement>document.querySelector('#root');
 
 const garageService = new GarageService(new GarageApi());
 const engineService = new EngineService(new EngineApi());
-const winnersService = new WinnersService(new WinnersRepository());
+const winnersService = new WinnersService(new WinnersApi());
 
 const modal: Modal = new Modal(root);
 const header: Header = new Header(root);

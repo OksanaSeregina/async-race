@@ -3,6 +3,8 @@ import { generateChunks, generateRandomColor, generateRandomName, isCustomEvent 
 import { Car, Pagination } from '../../components';
 import { getTemplate } from './garage.view';
 
+export type Data = { id: number; duration: number; name: string; color: string };
+
 export class Garage {
   private root: HTMLElement | null = null;
   private titleEl: HTMLElement | null = null;
@@ -122,17 +124,11 @@ export class Garage {
     if (!isCustomEvent(event)) {
       throw new Error('Not a custom event');
     }
-    const racers: Promise<{ id: number; duration: number; name: string; color: string } | void>[] = this.chunks[
-      this.pagination.garage
-    ]?.map((car) => car.start());
-    void Promise.allSettled(racers).then((value) => {
-      const data = value
-        .filter((item) => item.status === 'fulfilled' && item.value)
-        .map((item) => (({ ...item } as { value: { id: number; duration: number; name: string; color: string } }).value))
-        .sort((a, b) => a.duration - b.duration)
-        .map((item) => ({ ...item, duration: (item.duration / 1000).toFixed(1) }));
-      this.root?.dispatchEvent(new CustomEvent('completeRaceEvent', { detail: { data } }));
-    });
+    const racers: Promise<Data | void>[] = this.chunks[this.pagination.garage]?.map((car) => car.start());
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+    void Promise.any(racers).then((value) =>
+      this.root?.dispatchEvent(new CustomEvent('completeRaceEvent', { detail: { data: value as Data } }))
+    );
   }
 
   private onResetRace(event: Event): void {

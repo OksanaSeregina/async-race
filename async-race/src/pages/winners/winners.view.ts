@@ -2,10 +2,8 @@ import { renderCar } from '../../shared';
 import { Sort } from './model';
 import './winners.scss';
 
-export function getWinnerView(winner: { id: number; duration: number; name: string; color: string }, index: number) {
-  return `<div class="win-win"><span>${index + 1}</span> ${renderCar(winner.color, '5rem')} ${winner.name} <span>${
-    winner.duration
-  } s</span></div>`;
+export function getWinnerView(winner: { id: number; duration: number; name: string; color: string }) {
+  return `<div class="win-win"> ${renderCar(winner.color, '5rem')} ${winner.name} <span>${winner.duration} s</span></div>`;
 }
 
 export function getWinnerRow(order: number, color: string, name: string, wins: number, time: number) {
