@@ -3,7 +3,7 @@ import { renderCar } from '../../shared';
 import './car.scss';
 
 export function getTemplate(car: ICar): string {
-  const { id, name, color } = car;
+  const { name, color } = car;
   return `
       <div class="app-car-item__edit">
         <button class="app-car-item__select-button car-button">Select</button>
@@ -15,7 +15,7 @@ export function getTemplate(car: ICar): string {
           <button class="app-car-item__start-button car-button">Start</button>
           <button class="app-car-item__stop-button car-button">Stop</button>
         </div>
-        ${renderCar(-1, color, '5rem')}
+        ${renderCar(color, '5rem')}
         <svg class="flag"
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"

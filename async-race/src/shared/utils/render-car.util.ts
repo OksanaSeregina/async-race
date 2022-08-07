@@ -1,7 +1,5 @@
-export function renderCar(id = -1, color: string, width = 'auto', height = 'auto'): string {
-  const uid: string = id > -1 ? `(id: ${id})` : '';
+export function renderCar(color: string, width = 'auto', height = 'auto'): string {
   return `
-  ${uid}
   <svg
     width = ${width}
     height: ${height}

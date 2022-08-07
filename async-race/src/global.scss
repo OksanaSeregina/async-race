@@ -18,7 +18,9 @@ body {
 
 .hidden {
   position: absolute;
-  left: -9999px;
+  left: -99999px;
+  height: 1px;
+  width: 1px;
 }
 
 .visible {
@@ -28,6 +30,6 @@ body {
 
 .win-win {
   display: grid;
-  grid-template-columns: repeat(3, 5rem) 1fr 5rem;
+  grid-template-columns: repeat(2, 5rem) 1fr 5rem;
   align-items: center;
 }

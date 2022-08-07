@@ -1,7 +1,7 @@
 @import '../../colors.scss';
 
 .btn-container {
-  margin: 20px 0 20px 40px;
+  margin: 20px 40px 20px 40px;
 }
 
 .form {
@@ -52,4 +52,11 @@
 
 .button:hover:not(:disabled) {
   background-color: $backgroundHover;
+}
+
+@media screen and (max-width: 1024px) {
+  .form,
+  .race-control {
+    width: 100%;
+  }
 }

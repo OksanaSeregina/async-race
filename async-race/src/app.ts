@@ -30,6 +30,7 @@ export class App {
   private onRouteGarage(): void {
     this.winners.element?.classList.remove('visible');
     this.winners.element?.classList.add('hidden');
+    this.garage.element?.classList.remove('hidden');
     this.garage.element?.classList.add('visible');
     this.body?.classList.remove('winners');
     this.body?.classList.add('garage');
@@ -38,6 +39,7 @@ export class App {
   private onRouteWinners(): void {
     this.garage.element?.classList.remove('visible');
     this.garage.element?.classList.add('hidden');
+    this.winners.element?.classList.remove('hidden');
     this.winners.element?.classList.add('visible');
     this.body?.classList.remove('garage');
     this.body?.classList.add('winners');

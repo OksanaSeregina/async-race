@@ -130,7 +130,8 @@ export class Garage {
       const data = value
         .filter((item) => item.status === 'fulfilled' && item.value)
         .map((item) => (({ ...item } as { value: { id: number; duration: number; name: string; color: string } }).value))
-        .sort((a, b) => a.duration - b.duration);
+        .sort((a, b) => a.duration - b.duration)
+        .map((item) => ({ ...item, duration: (item.duration / 1000).toFixed(1) }));
       this.root?.dispatchEvent(new CustomEvent('completeRaceEvent', { detail: { data } }));
     });
   }

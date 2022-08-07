@@ -14,7 +14,7 @@ const modal: Modal = new Modal(root);
 const header: Header = new Header(root);
 const pagination: Pagination = new Pagination(root);
 const garage: Garage = new Garage(garageService, engineService, pagination);
-const winners: Winners = new Winners(root, modal, garage, winnersService);
+const winners: Winners = new Winners(root, modal, garage, winnersService, pagination);
 
 const app = new App(root, header, garage, winners, pagination);
 void app.start();
