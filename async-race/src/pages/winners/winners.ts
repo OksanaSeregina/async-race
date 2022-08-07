@@ -1,6 +1,7 @@
-import { Car, Garage, Modal, Pagination } from '../../components';
-import { WINNERS_PER_PAGE, IWinners, WinnersService, ICar } from '../../core';
+import { Car, Modal, Pagination } from '../../components';
+import { WINNERS_PER_PAGE, IWinners, WinnersService } from '../../core';
 import { generateChunks, isCustomEvent } from '../../shared';
+import { Garage } from '../garage';
 import { getTemplate, getWinnerRow, getWinnerView } from './winners.view';
 
 export class Winners {

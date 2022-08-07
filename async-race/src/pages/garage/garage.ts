@@ -1,7 +1,6 @@
-import { CAR_PER_PAGE, EngineService, GarageService, ICar, RANDOM_COUNT, WinnersService } from '../../core';
+import { CAR_PER_PAGE, EngineService, GarageService, ICar, RANDOM_COUNT } from '../../core';
 import { generateChunks, generateRandomColor, generateRandomName, isCustomEvent } from '../../shared';
-import { Car } from '../car';
-import { Pagination } from '../pagination';
+import { Car, Pagination } from '../../components';
 import { getTemplate } from './garage.view';
 
 export class Garage {

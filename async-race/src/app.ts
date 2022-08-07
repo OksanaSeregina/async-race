@@ -1,5 +1,5 @@
-import { CarController, Garage, Header, Pagination } from './components';
-import { Winners } from './pages';
+import { CarController, Header, Pagination } from './components';
+import { Garage, Winners } from './pages';
 
 export class App {
   private body = <HTMLElement>document.querySelector('body');
@@ -19,7 +19,7 @@ export class App {
     this.pagination.init();
 
     this.listen();
-    this.onRouteGarage(); //TBD
+    this.onRouteGarage();
   }
 
   private listen(): void {

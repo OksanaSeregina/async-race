@@ -1,7 +1,7 @@
 import { App } from './app';
-import { Garage, Header, Pagination, Modal } from './components';
+import { Header, Pagination, Modal } from './components';
 import { GarageService, GarageRepository, EngineService, EngineRepository, WinnersService, WinnersRepository } from './core';
-import { Winners } from './pages';
+import { Garage, Winners } from './pages';
 import './global.scss';
 
 const root = <HTMLElement>document.querySelector('#root');
