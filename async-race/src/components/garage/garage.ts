@@ -1,4 +1,4 @@
-import { CAR_PER_PAGE, EngineService, GarageService, ICar, RANDOM_COUNT } from '../../core';
+import { CAR_PER_PAGE, EngineService, GarageService, ICar, RANDOM_COUNT, WinnersService } from '../../core';
 import { generateChunks, generateRandomColor, generateRandomName, isCustomEvent } from '../../shared';
 import { Car } from '../car';
 import { Pagination } from '../pagination';
@@ -61,11 +61,11 @@ export class Garage {
   }
 
   private updateView(): void {
-    const page = this.pagination.update({ selected: 'garage', max: this.chunks.length });
+    this.pagination.updateMax({ maxGarage: this.chunks.length });
     this.cars.forEach((car) => car.destroy());
-    this.chunks[page]?.forEach((car) => car.render());
+    this.chunks[this.pagination.garage]?.forEach((car) => car.render());
     if (this.pageEl) {
-      this.pageEl.innerText = `Page #${page + 1}`;
+      this.pageEl.innerText = `Page #${this.pagination.garage + 1}`;
     }
   }
 

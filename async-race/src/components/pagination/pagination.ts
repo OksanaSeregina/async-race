@@ -4,7 +4,7 @@ import { getTemplate } from './pagination.view';
 export class Pagination {
   private template: string = getTemplate();
   private navEl: HTMLCollectionOf<HTMLButtonElement> | null = null;
-  private state: IPagination = { garage: 0, winners: 0, selected: 'garage', max: 0 };
+  private state: IPagination = { garage: 0, winners: 0, selected: 'garage', maxGarage: 0, maxWinners: 0 };
   private paginationEvent = new CustomEvent('paginate');
 
   get garage(): number {
@@ -26,9 +26,12 @@ export class Pagination {
     this.listen();
   }
 
-  public update(value: Omit<IPagination, 'garage' | 'winners'>): number {
+  public setPage(value: 'garage' | 'winners'): void {
+    this.state = { ...this.state, selected: value };
+  }
+
+  public updateMax(value: { maxGarage: number } | { maxWinners: number }): void {
     this.state = { ...this.state, ...value };
-    return this.state[this.selected];
   }
 
   private render(): void {
@@ -44,12 +47,13 @@ export class Pagination {
   private onClick(event: Event): void {
     const value: number = this.state[this.selected];
     const action = <PaginationRole>(event.target as HTMLElement).getAttribute('data-role');
+    const max = this.state.selected === 'garage' ? this.state.maxGarage : this.state.maxWinners;
     switch (action) {
       case PaginationRole.Previous:
         this.state = { ...this.state, [this.selected]: value >= 1 ? value - 1 : value };
         break;
       case PaginationRole.Next:
-        this.state = { ...this.state, [this.selected]: this.state.max > value + 1 ? value + 1 : value };
+        this.state = { ...this.state, [this.selected]: (max as number) > value + 1 ? value + 1 : value };
         break;
     }
     (<HTMLElement>document.querySelector('.app-garage')).dispatchEvent(this.paginationEvent);

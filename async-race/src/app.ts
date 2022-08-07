@@ -34,6 +34,7 @@ export class App {
     this.garage.element?.classList.add('visible');
     this.body?.classList.remove('winners');
     this.body?.classList.add('garage');
+    this.pagination.setPage('garage');
   }
 
   private onRouteWinners(): void {
@@ -43,5 +44,6 @@ export class App {
     this.winners.element?.classList.add('visible');
     this.body?.classList.remove('garage');
     this.body?.classList.add('winners');
+    this.pagination.setPage('winners');
   }
 }

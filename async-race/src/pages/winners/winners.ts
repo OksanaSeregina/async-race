@@ -1,7 +1,7 @@
 import { Car, Garage, Modal, Pagination } from '../../components';
-import { WINNERS_PER_PAGE, IWinners, WinnersService } from '../../core';
-import { generateChunks, isCustomEvent, renderCar } from '../../shared';
-import { getTemplate, getWinnerView } from './winners.view';
+import { WINNERS_PER_PAGE, IWinners, WinnersService, ICar } from '../../core';
+import { generateChunks, isCustomEvent } from '../../shared';
+import { getTemplate, getWinnerRow, getWinnerView } from './winners.view';
 
 export class Winners {
   private root: HTMLElement = document.createElement('div');
@@ -73,7 +73,8 @@ export class Winners {
 
   private listen(): void {
     (<HTMLElement>this.garage.element).addEventListener('completeRaceEvent', this.onCompleteRace.bind(this));
-    this.root.addEventListener('paginate', this.onPaginate.bind(this));
+    (<HTMLElement>this.garage.element).addEventListener('paginate', this.onPaginate.bind(this));
+    (<HTMLElement>this.garage.element).addEventListener('deleteCar', this.onDeleteCar.bind(this));
   }
 
   private onCompleteRace(event: Event): void {
@@ -85,6 +86,23 @@ export class Winners {
     this.modal.show('RACE RESULTS', tpl);
     const [{ duration, id }] = winners;
     void this.updateWinners({ id, duration });
+  }
+
+  private onDeleteCar(event: Event): void {
+    if (!isCustomEvent(event)) {
+      throw new Error('Not a custom event');
+    }
+    const request: IWinners = (<{ data: IWinners }>event.detail).data;
+    void this.deleteWinner(request);
+  }
+
+  private async deleteWinner(request: IWinners): Promise<void> {
+    await this.winnersService.deleteWinner(request.id).then(() => {
+      const index: number = this.dbWinners.findIndex((winner) => winner.id === request.id);
+      if (index > -1) {
+        this.dbWinners = [...this.dbWinners.slice(0, index), ...this.dbWinners.slice(index + 1)];
+      }
+    });
   }
 
   private async updateWinners({ id, duration }: { id: number; duration: number }): Promise<void> {
@@ -112,26 +130,18 @@ export class Winners {
   }
 
   private updateView() {
-    const page = this.pagination.update({ selected: 'winners', max: this.chunks.length });
-    // this.dbWinners.forEach((winner) => winner.destroy());
-    // this.chunks[page]?.forEach((winner) => winner.render());
-
-    const tpl = this.dbWinners
-      .map((winner, index) => {
+    this.pagination.updateMax({ maxWinners: this.chunks.length });
+    const tpl = this.chunks[this.pagination.winners]
+      ?.map((winner, index) => {
         const { color, name } = <Car>this.garage.cars.find((car) => car.id === winner.id);
-        return `
-          <tr>
-            <td>${index + 1}</td>
-            <td>${renderCar(color, '5rem')}</td>
-            <td>${name}</td>
-            <td>${winner.wins}</td>
-            <td>${winner.time}</td>
-          </tr>`;
+        const order: number = this.pagination.winners * WINNERS_PER_PAGE + index + 1;
+        return getWinnerRow(order, color, name, winner.wins, winner.time);
       })
       .join('');
+
     (<HTMLElement>this.tableEl).innerHTML = tpl;
     if (this.pageEl) {
-      this.pageEl.innerText = `Page #${page + 1}`;
+      this.pageEl.innerText = `Page #${this.pagination.winners + 1}`;
     }
   }
 }

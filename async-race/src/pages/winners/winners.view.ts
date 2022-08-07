@@ -7,6 +7,16 @@ export function getWinnerView(winner: { id: number; duration: number; name: stri
   } s</span></div>`;
 }
 
+export function getWinnerRow(order: number, color: string, name: string, wins: number, time: number) {
+  return `<tr>
+            <td>${order}</td>
+            <td>${renderCar(color, '5rem')}</td>
+            <td>${name}</td>
+            <td>${wins}</td>
+            <td>${time}</td>
+          </tr>`;
+}
+
 export function getTemplate() {
   return `
           <h1 class="txt-center" data-role="winners"></h1>
