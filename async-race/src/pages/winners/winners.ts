@@ -2,6 +2,7 @@ import { Car, Modal, Pagination } from '../../components';
 import { WINNERS_PER_PAGE, IWinners, WinnersService } from '../../core';
 import { generateChunks, isCustomEvent } from '../../shared';
 import { Garage } from '../garage';
+import { Sort } from './model';
 import { getTemplate, getWinnerRow, getWinnerView } from './winners.view';
 
 export class Winners {
@@ -76,6 +77,28 @@ export class Winners {
     (<HTMLElement>this.garage.element).addEventListener('completeRaceEvent', this.onCompleteRace.bind(this));
     (<HTMLElement>this.garage.element).addEventListener('paginate', this.onPaginate.bind(this));
     (<HTMLElement>this.garage.element).addEventListener('deleteCar', this.onDeleteCar.bind(this));
+
+    const [askWin, descWin] = <HTMLCollectionOf<HTMLButtonElement>>document.getElementById('wins')?.getElementsByTagName('button');
+    const [askTime, descTime] = <HTMLCollectionOf<HTMLButtonElement>>document.getElementById('time')?.getElementsByTagName('button');
+    [askWin, descWin, askTime, descTime].forEach((btn) => btn.addEventListener('click', this.onSort.bind(this)));
+  }
+
+  private onSort(event: Event): void {
+    const action = <Sort>(event.target as HTMLElement).getAttribute('data-role');
+    switch (action) {
+      case Sort.AskTime:
+        this.dbWinners = this.dbWinners.sort((a, b) => a.time - b.time);
+        break;
+      case Sort.DeskTime:
+        this.dbWinners = this.dbWinners.sort((a, b) => b.time - a.time);
+        break;
+      case Sort.AskWinnners:
+        this.dbWinners = this.dbWinners.sort((a, b) => a.wins - b.wins);
+        break;
+      case Sort.DeskWinners:
+        this.dbWinners = this.dbWinners.sort((a, b) => b.wins - a.wins);
+        break;
+    }
   }
 
   private onCompleteRace(event: Event): void {

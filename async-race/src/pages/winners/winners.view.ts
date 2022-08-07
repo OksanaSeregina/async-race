@@ -1,4 +1,5 @@
 import { renderCar } from '../../shared';
+import { Sort } from './model';
 import './winners.scss';
 
 export function getWinnerView(winner: { id: number; duration: number; name: string; color: string }, index: number) {
@@ -26,8 +27,11 @@ export function getTemplate() {
               <th>Number</th>
               <th>Car</th>
               <th>Name</th>
-              <th class="table-sort wins">Wins</th>
-              <th class="table-sort time">Best time</th>
+              <th class="table-sort wins" id="wins">Wins
+                <button data-role="${Sort.AskWinnners}">asc</button>
+                <button data-role="${Sort.DeskWinners}">desc</button></th>
+              <th class="table-sort time" id="time">
+                Best time <button data-role="${Sort.AskTime}">asc</button> <button data-role="${Sort.DeskTime}">desc</button></th>
             </thead>
             <tbody data-role="winners-table">
             </tbody>
