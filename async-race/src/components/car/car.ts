@@ -1,4 +1,4 @@
-import { EngineService, ICar, IEngineRequest } from '../../core';
+import { EngineService, ICar, IDrive, IEngineRequest } from '../../core';
 import { getTemplate } from './car.view';
 
 const TRACK_SPACE = 11 * 16; // distance
@@ -31,7 +31,7 @@ export class Car {
     return this; // returns this for using with Garage.updateCar()
   }
 
-  public async start(): Promise<{ id: number; duration: number; name: string; color: string } | void> {
+  public async start(): Promise<{ id: number; duration: number; name: string; color: string } | Error> {
     (<HTMLButtonElement>this.startBtn).disabled = true;
     (<HTMLButtonElement>this.stopBtn).disabled = false;
 
@@ -39,7 +39,12 @@ export class Car {
     const { velocity, distance } = await this.engineService.startStop(request);
     const duration: number = distance / velocity;
     this.runCar(duration);
-    return this.switchToDrive().then(() => ({ id: this.car.id, duration, name: this.name, color: this.color }));
+    return this.switchToDrive()
+      .then(() => ({ id: this.car.id, duration, name: this.name, color: this.color }))
+      .catch((error: Error) => {
+        this.stopCar();
+        return error;
+      });
   }
 
   public async stop(): Promise<void> {
@@ -51,15 +56,9 @@ export class Car {
     (this.svgElement as SVGElement).style.transform = 'translateX(0px)';
   }
 
-  public switchToDrive(): Promise<{ id: number } | void> {
+  public switchToDrive(): Promise<IDrive> {
     const request: IEngineRequest = { id: this.car.id, status: 'drive' };
-    return this.engineService
-      .switchToDrive(request)
-      .then(() => Promise.resolve())
-      .catch(() => {
-        this.stopCar();
-        throw new Error('Car was broken');
-      });
+    return this.engineService.switchToDrive(request);
   }
 
   public render(car?: ICar): void {

@@ -126,7 +126,7 @@ export class Garage {
       throw new Error('Not a custom event');
     }
     this.isStopped = false;
-    const racers: Promise<Data | void>[] = this.chunks[this.pagination.garage]?.map((car) => car.start());
+    const racers: Promise<Data | Error>[] = this.chunks[this.pagination.garage]?.map((car) => car.start());
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     void Promise.any(racers).then((value) => {
       if (!this.isStopped) {
