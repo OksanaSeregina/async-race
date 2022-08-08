@@ -56,8 +56,12 @@
   -webkit-transition: all 150ms ease-in-out;
   transition: all 150ms ease-in-out;
 }
-.car-button:hover {
+.car-button:not(:disabled):hover {
   cursor: pointer;
   color: $colorText;
   box-shadow: 0 0 5px 0 $brightGreen inset, 0 0 5px 2px $brightGreen;
+}
+
+button:disabled {
+  filter: grayscale(0.7);
 }

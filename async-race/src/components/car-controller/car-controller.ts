@@ -1,3 +1,4 @@
+import { stubTrue } from 'lodash';
 import { BASE_COLOR, ICar } from '../../core';
 import { isCustomEvent } from '../../shared';
 import { getTemplate } from './car-controller.view';
@@ -48,6 +49,17 @@ export class CarController {
     updateName.addEventListener('input', () => [updateName, updateColor, updateBtn].forEach((el) => (el.disabled = !updateName.value)));
     [createBtn, updateBtn, raceBtn, resetBtn, generateBtn].forEach((btn) => btn.addEventListener('click', this.onClick.bind(this)));
     this.root?.addEventListener('selectCar', this.onSelect.bind(this));
+
+    resetBtn.disabled = true;
+    raceBtn.disabled = !resetBtn.disabled;
+    this.root?.addEventListener('startRace', () => {
+      resetBtn.disabled = false;
+      raceBtn.disabled = !resetBtn.disabled;
+    });
+    this.root?.addEventListener('resetRace', () => {
+      resetBtn.disabled = true;
+      raceBtn.disabled = !resetBtn.disabled;
+    });
   }
 
   private onSelect(event: Event): void {

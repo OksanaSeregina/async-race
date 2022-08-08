@@ -8,8 +8,8 @@ export class Car {
   private svgElement: SVGSVGElement | null = null;
   private selectCarEvent = new CustomEvent('selectCar', { detail: { data: {} as ICar } });
   private deleteCarEvent = new CustomEvent('deleteCar', { detail: { data: {} as ICar } });
-
-  constructor(private engineService: EngineService, private car: ICar, private root: HTMLElement) {}
+  private startBtn: HTMLButtonElement | null = null;
+  private stopBtn: HTMLButtonElement | null = null;
 
   public get id(): number {
     return this.car.id;
@@ -23,6 +23,8 @@ export class Car {
     return this.car.name;
   }
 
+  constructor(private engineService: EngineService, private car: ICar, private root: HTMLElement) {}
+
   public updateCar(car: ICar): Car {
     this.car = car;
     this.render(car);
@@ -30,6 +32,9 @@ export class Car {
   }
 
   public async start(): Promise<{ id: number; duration: number; name: string; color: string } | void> {
+    (<HTMLButtonElement>this.startBtn).disabled = true;
+    (<HTMLButtonElement>this.stopBtn).disabled = false;
+
     const request: IEngineRequest = { id: this.car.id, status: 'started' };
     const { velocity, distance } = await this.engineService.startStop(request);
     const duration: number = distance / velocity;
@@ -38,6 +43,8 @@ export class Car {
   }
 
   public async stop(): Promise<void> {
+    (<HTMLButtonElement>this.startBtn).disabled = false;
+    (<HTMLButtonElement>this.stopBtn).disabled = true;
     const request: IEngineRequest = { id: this.car.id, status: 'stopped' };
     this.stopCar();
     await this.engineService.startStop(request);
@@ -51,7 +58,7 @@ export class Car {
       .then(() => Promise.resolve())
       .catch(() => {
         this.stopCar();
-        throw new Error();
+        throw new Error('Car was broken');
       });
   }
 
@@ -70,6 +77,12 @@ export class Car {
 
     const [element] = (document.getElementById(`${this.car.id}`) as HTMLElement).getElementsByTagName('svg');
     this.svgElement = element;
+
+    const [startBtn, stopBtn] = <HTMLCollectionOf<HTMLButtonElement>>(
+      document.getElementById(`control-btn-${this.id}`)?.getElementsByTagName('button')
+    );
+    this.startBtn = startBtn;
+    this.stopBtn = stopBtn;
   }
 
   public destroy(): void {

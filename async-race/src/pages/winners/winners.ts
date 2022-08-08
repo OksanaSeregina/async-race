@@ -74,7 +74,7 @@ export class Winners {
   }
 
   private listen(): void {
-    (<HTMLElement>this.garage.element).addEventListener('completeRaceEvent', this.onCompleteRace.bind(this));
+    (<HTMLElement>this.garage.element).addEventListener('completeRace', this.onCompleteRace.bind(this));
     (<HTMLElement>this.garage.element).addEventListener('paginate', this.onPaginate.bind(this));
     (<HTMLElement>this.garage.element).addEventListener('deleteCar', this.onDeleteCar.bind(this));
 

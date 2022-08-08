@@ -44,13 +44,13 @@
   text-transform: uppercase;
   border: 2px solid $colorBorder;
   border-radius: 10px;
-  cursor: pointer;
   color: $colorText;
   letter-spacing: 1px;
   font-weight: 700;
 }
 
-.button:hover:not(:disabled) {
+.button:not(:disabled):hover {
+  cursor: pointer;
   background-color: $backgroundHover;
 }
 

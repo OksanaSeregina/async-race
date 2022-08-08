@@ -10,6 +10,7 @@ export class Garage {
   private titleEl: HTMLElement | null = null;
   private pageEl: HTMLElement | null = null;
   private chunks: Array<Array<Car>> = [];
+  private isStopped: boolean = false;
 
   get element(): HTMLElement | null {
     return this.root;
@@ -124,17 +125,21 @@ export class Garage {
     if (!isCustomEvent(event)) {
       throw new Error('Not a custom event');
     }
+    this.isStopped = false;
     const racers: Promise<Data | void>[] = this.chunks[this.pagination.garage]?.map((car) => car.start());
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-    void Promise.any(racers).then((value) =>
-      this.root?.dispatchEvent(new CustomEvent('completeRaceEvent', { detail: { data: value as Data } }))
-    );
+    void Promise.any(racers).then((value) => {
+      if (!this.isStopped) {
+        this.root?.dispatchEvent(new CustomEvent('completeRace', { detail: { data: value as Data } }));
+      }
+    });
   }
 
   private onResetRace(event: Event): void {
     if (!isCustomEvent(event)) {
       throw new Error('Not a custom event');
     }
+    this.isStopped = true;
     this.chunks[this.pagination.garage]?.forEach((car) => void car.stop());
   }
 
