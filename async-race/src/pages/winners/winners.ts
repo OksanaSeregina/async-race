@@ -1,5 +1,5 @@
-import { Car, Modal, Pagination } from '../../components';
-import { WINNERS_PER_PAGE, IWinners, WinnersService } from '../../core';
+import { Modal, Pagination } from '../../components';
+import { WINNERS_PER_PAGE, IWinners, WinnersService, ICar } from '../../core';
 import { generateChunks, isCustomEvent } from '../../shared';
 import { Data, Garage } from '../garage';
 import { Sort } from './model';
@@ -76,11 +76,24 @@ export class Winners {
   private listen(): void {
     (<HTMLElement>this.garage.element).addEventListener('completeRace', this.onCompleteRace.bind(this));
     (<HTMLElement>this.garage.element).addEventListener('paginate', this.onPaginate.bind(this));
+    (<HTMLElement>this.garage.element).addEventListener('updateCar', this.onUpdateCar.bind(this));
     (<HTMLElement>this.garage.element).addEventListener('deleteCar', this.onDeleteCar.bind(this));
 
     const [askWin, descWin] = <HTMLCollectionOf<HTMLButtonElement>>document.getElementById('wins')?.getElementsByTagName('button');
     const [askTime, descTime] = <HTMLCollectionOf<HTMLButtonElement>>document.getElementById('time')?.getElementsByTagName('button');
     [askWin, descWin, askTime, descTime].forEach((btn) => btn.addEventListener('click', this.onSort.bind(this)));
+  }
+
+  private onUpdateCar(event: Event): void {
+    if (!isCustomEvent(event)) {
+      throw new Error('Not a custom event');
+    }
+    const request: ICar = (<{ data: ICar }>event.detail).data;
+    const index: number = this.dbWinners.findIndex((winner) => winner.id === request.id);
+    if (index > -1) {
+      const target: IWinners | undefined = this.dbWinners[index];
+      this.dbWinners = [...this.dbWinners.slice(0, index), target, ...this.dbWinners.slice(index + 1)];
+    }
   }
 
   private onSort(event: Event): void {
@@ -107,9 +120,11 @@ export class Winners {
     }
     const source = (<{ data: Data }>event.detail).data;
     const winner = { ...source, duration: Number((source.duration / 1000).toFixed(1)) };
-    this.modal.show('RACE RESULTS', getWinnerView(winner));
     const { duration, id } = winner;
-    void this.updateWinners({ id, duration });
+    if (id) {
+      this.modal.show('RACE RESULTS', getWinnerView(winner));
+      void this.updateWinners({ id, duration });
+    }
   }
 
   private onDeleteCar(event: Event): void {
@@ -117,7 +132,10 @@ export class Winners {
       throw new Error('Not a custom event');
     }
     const request: IWinners = (<{ data: IWinners }>event.detail).data;
-    void this.deleteWinner(request);
+    const hasWinner: boolean = this.dbWinners.some((winner) => winner.id === request.id);
+    if (hasWinner) {
+      void this.deleteWinner(request);
+    }
   }
 
   private async deleteWinner(request: IWinners): Promise<void> {
@@ -157,13 +175,15 @@ export class Winners {
     this.pagination.updateMax({ maxWinners: this.chunks.length });
     const tpl = this.chunks[this.pagination.winners]
       ?.map((winner, index) => {
-        const { color, name } = <Car>this.garage.cars.find((car) => car.id === winner.id);
-        const order: number = this.pagination.winners * WINNERS_PER_PAGE + index + 1;
-        return getWinnerRow(order, color, name, winner.wins, winner.time);
+        const win = this.garage.cars.find((car) => car.id === winner.id);
+        if (win) {
+          const order: number = this.pagination.winners * WINNERS_PER_PAGE + index + 1;
+          return getWinnerRow(order, win.color, win.name, winner.wins, winner.time);
+        }
       })
       .join('');
 
-    (<HTMLElement>this.tableEl).innerHTML = tpl;
+    (<HTMLElement>this.tableEl).innerHTML = tpl || '';
     if (this.pageEl) {
       this.pageEl.innerText = `Page #${this.pagination.winners + 1}`;
     }

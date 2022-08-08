@@ -43,7 +43,7 @@ export class Car {
       .then(() => ({ id: this.car.id, duration, name: this.name, color: this.color }))
       .catch((error: Error) => {
         this.stopCar();
-        return error;
+        throw Error(error.message);
       });
   }
 
