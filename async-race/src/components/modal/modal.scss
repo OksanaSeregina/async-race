@@ -1,0 +1,66 @@
+@import '../../colors.scss';
+
+.modal {
+  display: flex;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+}
+
+.modal_content {
+  text-align: center;
+  width: 70.313%;
+  position: relative;
+  background-color: #e5e5e5;
+  margin: auto;
+  z-index: 99999;
+}
+
+.close_modal_window {
+  position: absolute;
+  right: 30px;
+  top: 2px;
+  cursor: pointer;
+  font-size: 60px;
+}
+
+.popup-content {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  padding: 100px 0;
+  padding: 5rem;
+}
+
+@media screen and (max-width: 1279px) {
+  .close_modal_window {
+    font-size: 40px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .popup-content {
+    font-size: 30px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .modal_content {
+    text-align: center;
+
+    .close_modal_window {
+      font-size: 30px;
+      right: 15px;
+    }
+  }
+
+  .popup-content {
+    font-size: 24px;
+  }
+}

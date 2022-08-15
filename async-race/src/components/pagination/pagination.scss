@@ -1,0 +1,23 @@
+@import '../../colors.scss';
+
+nav {
+  position: absolute;
+  margin-left: 30px;
+}
+
+.page-link {
+  width: 100px;
+  height: 30px;
+  cursor: pointer;
+  text-transform: uppercase;
+  border: 2px solid $colorBorder;
+  border-radius: 10px;
+  color: $colorText;
+  letter-spacing: 1px;
+  font-weight: 700;
+  margin-left: 10px;
+}
+
+.page-link:hover:not(:disabled) {
+  background-color: $backgroundHover;
+}

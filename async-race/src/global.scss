@@ -1,0 +1,35 @@
+@import 'colors.scss';
+
+* {
+  font-family: 'Raleway', sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
+.garage {
+  background-color: $lightGreen;
+}
+
+.winners {
+  background-color: $purple;
+}
+
+.hidden {
+  position: absolute;
+  left: -99999px;
+  height: 1px;
+  width: 1px;
+}
+
+.visible {
+  position: relative;
+  left: 0;
+}
+
+.win-win {
+  display: grid;
+  grid-template-columns: 5rem 1fr 5rem;
+  align-items: center;
+}

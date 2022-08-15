@@ -1,0 +1,67 @@
+@import '../../colors.scss';
+
+.app-car {
+  margin: 2rem 0;
+  box-sizing: border-box;
+  border-bottom: 0.1rem solid #000;
+}
+
+.app-car-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 2rem;
+
+  &__edit {
+    display: flex;
+    flex-flow: nowrap;
+    height: 2rem;
+    align-items: center;
+
+    * {
+      margin: 0 0.5rem;
+    }
+  }
+
+  &__control {
+    display: flex;
+    flex-flow: nowrap;
+    height: 2rem;
+    width: 10rem;
+    align-items: center;
+
+    * {
+      margin: 0 0.5rem;
+    }
+  }
+
+  svg {
+    pointer-events: none;
+  }
+
+  .flag {
+    position: absolute;
+    height: 2rem;
+    right: 6rem;
+  }
+}
+
+.car-button {
+  width: 64px;
+  border-radius: 5px;
+  border-color: $brightGreen;
+  color: $dark;
+  box-shadow: 0 0 40px 40px $brightGreen inset, 0 0 0 0 $brightGreen;
+  -webkit-transition: all 150ms ease-in-out;
+  transition: all 150ms ease-in-out;
+}
+.car-button:not(:disabled):hover {
+  cursor: pointer;
+  color: $colorText;
+  box-shadow: 0 0 5px 0 $brightGreen inset, 0 0 5px 2px $brightGreen;
+}
+
+button:disabled {
+  filter: grayscale(0.7);
+}

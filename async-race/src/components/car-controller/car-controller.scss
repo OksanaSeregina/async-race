@@ -1,0 +1,62 @@
+@import '../../colors.scss';
+
+.btn-container {
+  margin: 20px 40px 20px 40px;
+}
+
+.form {
+  height: 27px;
+  width: 45%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.input {
+  width: 60%;
+  font-size: 16px;
+  padding: 10px;
+  border: solid 2px $colorBorder;
+  border-radius: 10px;
+  box-sizing: border-box;
+  margin-right: 10px;
+}
+
+.input:focus {
+  border: solid 2px $colorBorder;
+  outline: none;
+  box-shadow: 0px 5px 10px 2px $colorText;
+}
+
+.color {
+  margin-right: 10px;
+}
+
+.race-control {
+  width: 45%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.button {
+  width: 150px;
+  height: 27px;
+  text-transform: uppercase;
+  border: 2px solid $colorBorder;
+  border-radius: 10px;
+  color: $colorText;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+.button:not(:disabled):hover {
+  cursor: pointer;
+  background-color: $backgroundHover;
+}
+
+@media screen and (max-width: 1024px) {
+  .form,
+  .race-control {
+    width: 100%;
+  }
+}
